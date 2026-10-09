@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Modal Verb Challenge Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Responsive -->
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        margin-top: 20px;
+      }
+      #challenge {
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      #output {
+        margin-top: 20px;
+        font-size: 16px;
+        white-space: pre-line;
+      }
+      button {
+        margin: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        background: #007bff;
+        color: #fff;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      .footer {
+        margin-top: 40px;
+        padding: 20px;
+        background: #111;
+        color: #fff;
+      }
+      .footer h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .social-icons {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+      .social-icons a {
+        margin: 10px;
+        font-size: 28px;
+        color: #fff;
+        text-decoration: none;
+      }
+      .social-icons a:hover {
+        color: #00ffcc;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🎮 Marita and Josué present, activity 3</h1>
+    <h1>🎮 Modal Verb Challenge Game</h1>
+    <p>
+      Click "Start Challenge" and say a sentence with the correct modal verb!
+    </p>
+
+    <button onclick="newChallenge()">Start Challenge</button>
+    <button onclick="startListening()">🎤 Speak</button>
+
+    <div id="challenge"></div>
+    <div id="output"></div>
+
+    <!-- Josbrevar07 Special Footer -->
+    <div class="footer">
+      <h3>Designed by: Josbrevar07. © 2026. All Rights Reserved</h3>
+      <div class="social-icons">
+        <a href="https://walink.co/341b8e" title="WhatsApp"
+          ><i class="fa-brands fa-whatsapp"></i
+        ></a>
+        <a href="https://www.facebook.com/josue.brenesvargas" title="Facebook"
+          ><i class="fa-brands fa-facebook"></i
+        ></a>
+        <a href="https://www.instagram.com/josbrevar07/" title="Instagram"
+          ><i class="fa-brands fa-instagram"></i
+        ></a>
+        <a href="https://www.youtube.com/@josbrevar0773" title="YouTube"
+          ><i class="fa-brands fa-youtube"></i
+        ></a>
+        <a href="https://clases-de-manejo-personalizadas.com/" title="Website"
+          ><i class="fa-brands fa-chrome"></i
+        ></a>
+      </div>
+    </div>
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script>
+      let currentFunction = "";
+      const functions = {
+        Obligation: ["must", "have to"],
+        Permission: ["can", "may"],
+        Possibility: ["might", "could", "may"],
+        Advice: ["should", "ought to"],
+        Ability: ["can", "could"],
+        Prohibition: ["must not", "cannot"],
+        Probability: ["will", "would"],
+      };
+
+      function newChallenge() {
+        const keys = Object.keys(functions);
+        currentFunction = keys[Math.floor(Math.random() * keys.length)];
+        document.getElementById("challenge").innerText =
+          "Function: " + currentFunction + " → Say a sentence!";
+        document.getElementById("output").innerText = "";
+      }
+
+      function startListening() {
+        const recognition = new (
+          window.SpeechRecognition || window.webkitSpeechRecognition
+        )();
+        recognition.lang = "en-US";
+        recognition.start();
+
+        recognition.onresult = function (event) {
+          const speech = event.results[0][0].transcript.toLowerCase();
+          document.getElementById("output").innerText = "You said: " + speech;
+
+          let correct = false;
+          functions[currentFunction].forEach((modal) => {
+            if (speech.includes(modal)) correct = true;
+          });
+
+          if (correct) {
+            document.getElementById("output").innerText +=
+              "\n✅ Correct! You used the right modal for " + currentFunction;
+          } else {
+            document.getElementById("output").innerText +=
+              "\n❌ Try again. " +
+              currentFunction +
+              " requires: " +
+              functions[currentFunction].join(", ");
+          }
+        };
+      }
+    </script>
+  </body>
+</html>
